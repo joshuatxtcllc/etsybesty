@@ -1,0 +1,26 @@
+{
+  "name": "etsy-success-suite",
+  "version": "1.0.0",
+  "description": "AI-powered tool for Etsy sellers to research trends and optimize their stores",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "dev": "live-server"
+  },
+  "keywords": [
+    "etsy",
+    "analytics",
+    "ecommerce",
+    "ai",
+    "market-research"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^4.4.1",
+    "serve": "^14.2.1"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
