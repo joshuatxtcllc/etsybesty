@@ -1,139 +1,201 @@
-// Main JavaScript for Etsy Success Suite
 
-document.addEventListener('DOMContentLoaded', function() {
+// Main JavaScript for Etsy Success Suite
+document.addEventListener('DOMContentLoaded', async function() {
+  const api = window.api;
+
   // Tab switching functionality
   const tabs = document.querySelectorAll('.main-tabs .tab');
   const sections = [
-    document.querySelector('.search-section'), // Market Research tab content
-    document.querySelector('.store-builder').parentElement, // Store Builder tab section
-    document.querySelector('.competitor-analysis').parentElement, // AI Competitor Analysis tab section
-    document.querySelector('.card:last-child').parentElement // Listing Optimizer tab section
+    document.querySelector('.search-section'),
+    document.querySelector('.store-builder').parentElement,
+    document.querySelector('.competitor-analysis').parentElement,
+    document.querySelector('.card:last-child').parentElement
   ];
-  
+
   // Initially hide all sections except the first one
-  for (let i = 1; i < sections.length; i++) {
-    const sectionHeader = sections[i].querySelector('h2');
-    const sectionContent = Array.from(sections[i].children).filter(el => el.tagName !== 'H2' && el.tagName !== 'P');
-    
-    sectionContent.forEach(el => {
-      el.style.display = 'none';
-    });
-  }
-  
+  sections.forEach((section, index) => {
+    if (index !== 0) {
+      section.style.display = 'none';
+    }
+  });
+
   // Add click event listeners to tabs
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', function() {
       // Update active tab
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      
-      // Hide all sections first
+
+      // Show/hide sections
       sections.forEach((section, i) => {
-        const sectionHeader = section.querySelector('h2');
-        const sectionContent = Array.from(section.children).filter(el => el.tagName !== 'H2' && el.tagName !== 'P');
-        
-        if (i === 0) {
-          // Special handling for first section which doesn't have an h2
-          section.style.display = index === 0 ? 'block' : 'none';
-          document.querySelector('.dashboard').style.display = index === 0 ? 'grid' : 'none';
-          document.querySelector('.results-section > .result-card').style.display = index === 0 ? 'grid' : 'none';
-        } else {
-          // Show/hide section content based on selected tab
-          sectionContent.forEach(el => {
-            el.style.display = i === index ? 'block' : 'none';
-          });
-          
-          // Special case for grid layouts
-          if (i === 1 && index === 1) { // Store Builder
-            document.querySelector('.store-builder').style.display = 'grid';
-          }
-        }
+        section.style.display = i === index ? 'block' : 'none';
       });
+
+      // Special case for store builder grid
+      if (index === 1) {
+        document.querySelector('.store-builder').style.display = 'grid';
+      }
     });
   });
-  
+
   // Search form submission
   const searchForm = document.querySelector('.search-form');
-  searchForm.addEventListener('submit', function(e) {
+  searchForm.addEventListener('submit', async function(e) {
     e.preventDefault();
+    
     const keyword = document.getElementById('product-keyword').value;
     const category = document.getElementById('category').value;
     const priceRange = document.getElementById('price-range').value;
-    
-    // Mock analytics - in real app this would call the backend
-    console.log('Analyzing:', {
-      keyword, 
-      category, 
-      priceRange
-    });
-    
-    // Update results section to show it's for the searched item
-    if (keyword) {
-      document.querySelector('.results-section > p').textContent = 
-        `Here's what we found about "${keyword}"${category ? ' in ' + document.getElementById('category').options[document.getElementById('category').selectedIndex].text + ' category' : ''}`;
+
+    if (!keyword) {
+      alert('Please enter a product keyword');
+      return;
     }
-    
-    // In a real app, you would fetch results from backend here
-    // For demo, we'll just scroll to results
-    document.querySelector('.results-section').scrollIntoView({
-      behavior: 'smooth'
-    });
+
+    // Show loading state
+    const submitBtn = searchForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Analyzing...';
+    submitBtn.disabled = true;
+
+    try {
+      const result = await api.analyzeProduct(keyword, category, priceRange);
+      
+      // Update results section
+      document.querySelector('.results-section > p').textContent = 
+        `Here's what we found about "${keyword}"${category ? ' in ' + document.getElementById('category').options[document.getElementById('category').selectedIndex].text : ''}`;
+      
+      // Update metrics
+      document.querySelector('.score-high').textContent = result.overallScore;
+      document.querySelector('.metric-value:not(.score-high)').textContent = 
+        `$${result.pricing.optimal.min}-$${result.pricing.optimal.max}`;
+      document.querySelector('.score-medium').textContent = `${result.competition.saturationLevel}%`;
+
+      // Show results
+      document.querySelector('.results-section').scrollIntoView({ behavior: 'smooth' });
+    } catch (error) {
+      console.error('Analysis failed:', error);
+      alert('Analysis failed. Please try again.');
+    } finally {
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
   });
-  
+
   // AI Deep Analysis button
   const aiAnalysisBtn = document.querySelector('.btn-ai');
-  aiAnalysisBtn.addEventListener('click', function() {
+  aiAnalysisBtn.addEventListener('click', async function() {
     const keyword = document.getElementById('product-keyword').value;
     if (!keyword) {
       alert('Please enter a product keyword first');
       return;
     }
-    
-    // Show loading state
+
     aiAnalysisBtn.textContent = 'Analyzing...';
     aiAnalysisBtn.disabled = true;
-    
-    // Simulate AI analysis (would call backend in real app)
-    setTimeout(() => {
+
+    try {
+      const competitors = await api.getCompetitors(keyword);
+      
+      // Switch to AI Competitor Analysis tab
+      tabs[2].click();
+      document.querySelector('.competitor-analysis').scrollIntoView({ behavior: 'smooth' });
+      
+      // Update competitor cards with real data
+      updateCompetitorCards(competitors);
+    } catch (error) {
+      console.error('AI analysis failed:', error);
+      alert('AI analysis failed. Please try again.');
+    } finally {
       aiAnalysisBtn.textContent = 'AI-Powered Deep Analysis';
       aiAnalysisBtn.disabled = false;
-      
-      // Switch to AI Competitor Analysis tab and scroll to it
-      tabs[2].click();
-      document.querySelector('.competitor-analysis').scrollIntoView({
-        behavior: 'smooth'
-      });
-    }, 2000);
+    }
   });
-  
-  // Competitor analysis button handlers
-  const analyzeButtons = document.querySelectorAll('.competitor-card .btn-ai');
-  analyzeButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.stopPropagation(); // Prevent card click
-      const competitorName = this.closest('.competitor-card').querySelector('h3').textContent;
-      
-      // Show loading state
-      button.textContent = 'Analyzing...';
-      button.disabled = true;
-      
-      // Simulate analysis (would call backend in real app)
-      setTimeout(() => {
-        button.textContent = 'Analyze';
-        button.disabled = false;
-        
-        // Show success message
-        alert(`Analysis of ${competitorName} complete! Key insights have been added to your recommendations.`);
-      }, 1500);
-    });
-  });
-  
-  // Initialize store preview when banner image is selected
+
+  // Store Builder functionality
   const bannerInput = document.querySelector('input[type="file"]');
   if (bannerInput) {
     bannerInput.addEventListener('change', function() {
       if (this.files && this.files[0]) {
-        alert('In a full implementation, this would preview your banner in the store preview panel.');
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          // Update preview
+          const preview = document.querySelector('.preview-panel img');
+          preview.src = e.target.result;
+          preview.alt = 'Store Preview';
+        };
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+  }
+
+  // Competitor analysis buttons
+  const analyzeButtons = document.querySelectorAll('.competitor-card .btn-ai');
+  analyzeButtons.forEach(button => {
+    button.addEventListener('click', async function(e) {
+      e.stopPropagation();
+      const card = this.closest('.competitor-card');
+      const competitorName = card.querySelector('h3').textContent;
+
+      button.textContent = 'Analyzing...';
+      button.disabled = true;
+
+      try {
+        const storeData = await api.analyzeStore({ name: competitorName });
+        
+        // Update suggestions with competitor insights
+        const suggestions = document.querySelectorAll('.ai-suggestion');
+        suggestions.forEach((suggestion, index) => {
+          suggestion.innerHTML = `<strong>${Object.keys(storeData.suggestions)[index]}:</strong> ${Object.values(storeData.suggestions)[index]}`;
+        });
+        
+        alert(`Analysis of ${competitorName} complete! Key insights have been added to your recommendations.`);
+      } catch (error) {
+        console.error('Competitor analysis failed:', error);
+        alert('Analysis failed. Please try again.');
+      } finally {
+        button.textContent = 'Analyze';
+        button.disabled = false;
+      }
+    });
+  });
+
+  // Listing Optimizer functionality
+  const listingForm = document.querySelector('.card:last-child form');
+  if (listingForm) {
+    listingForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const title = this.querySelector('input[type="text"]').value;
+      const description = this.querySelector('textarea').value;
+      const tags = this.querySelector('input[type="text"]:last-child').value;
+
+      try {
+        const optimization = await api.optimizeListing(title, description, tags);
+        
+        // Update suggestions
+        const suggestions = this.querySelectorAll('.ai-suggestion');
+        suggestions.forEach(suggestion => {
+          const type = suggestion.querySelector('strong').textContent.toLowerCase();
+          suggestion.innerHTML = `<strong>${type}:</strong> ${optimization[type + 'Suggestions']}`;
+        });
+      } catch (error) {
+        console.error('Optimization failed:', error);
+        alert('Optimization failed. Please try again.');
+      }
+    });
+  }
+
+  function updateCompetitorCards(data) {
+    const cards = document.querySelectorAll('.competitor-card');
+    data.competitors.forEach((competitor, index) => {
+      if (cards[index]) {
+        const card = cards[index];
+        card.querySelector('h3').textContent = competitor.name;
+        const metrics = card.querySelectorAll('.competitor-metric');
+        metrics[0].innerHTML = `<strong>${competitor.sales}+</strong> sales`;
+        metrics[1].innerHTML = `<strong>${competitor.rating}★</strong> rating`;
+        metrics[2].innerHTML = `<strong>$${competitor.avgPrice}</strong> avg price`;
+        metrics[3].innerHTML = `<strong>${competitor.ranking}</strong> in category`;
       }
     });
   }
