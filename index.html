@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Etsy Success Suite</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">Etsy Success Suite</div>
+      <nav>
+        <ul>
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">My Products</a></li>
+          <li><a href="#">Store Builder</a></li>
+          <li><a href="#">Account</a></li>
+        </ul>
+      </nav>
+    </header>
+    
+    <div class="main-tabs">
+      <div class="tab active">Market Research</div>
+      <div class="tab">Store Builder</div>
+      <div class="tab">AI Competitor Analysis</div>
+      <div class="tab">Listing Optimizer</div>
+    </div>
+    
+    <!-- Market Research Tab -->
+    <section class="search-section">
+      <h2>Analyze Product Potential</h2>
+      <p>Enter a product idea to analyze its market potential on Etsy</p>
+      <form class="search-form">
+        <div class="form-group">
+          <label for="product-keyword">Product Keyword</label>
+          <input type="text" id="product-keyword" placeholder="e.g., wooden coasters">
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category">
+            <option value="">Select a category</option>
+            <option value="home-decor">Home Decor</option>
+            <option value="jewelry">Jewelry</option>
+            <option value="clothing">Clothing</option>
+            <option value="art">Art</option>
+            <option value="craft-supplies">Craft Supplies</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="price-range">Price Range</label>
+          <select id="price-range">
+            <option value="">Any price</option>
+            <option value="0-20">$0 - $20</option>
+            <option value="20-50">$20 - $50</option>
+            <option value="50-100">$50 - $100</option>
+            <option value="100+">$100+</option>
+          </select>
+        </div>
+        <div class="form-group" style="align-self: flex-end; display: flex; gap: 10px;">
+          <button type="submit" class="btn btn-primary">Analyze</button>
+          <button type="button" class="btn btn-ai">AI-Powered Deep Analysis</button>
+        </div>
+      </form>
+    </section>
+    
+    <section class="dashboard">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Search Volume Trend</div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-placeholder">
+            <img src="/api/placeholder/300/200" alt="Search Volume Chart">
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Competition Analysis</div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-placeholder">
+            <img src="/api/placeholder/300/200" alt="Competition Chart">
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Seasonal Demand</div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-placeholder">
+            <img src="/api/placeholder/300/200" alt="Seasonal Demand Chart">
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="results-section">
+      <h2>Analysis Results</h2>
+      <p>Here's what we found about "wooden coasters" in Home Decor category</p>
+      
+      <div class="result-card">
+        <div class="metric-box">
+          <div class="metric-value score-high">85</div>
+          <div class="metric-label">Overall Score</div>
+        </div>
+        <div>
+          <h3>Market Opportunity Analysis</h3>
+          <p>This product shows strong potential with high search volume and moderate competition. Consider adding unique customization options to stand out from competitors.</p>
+          <div style="margin-top: 15px;">
+            <b>Top Keywords:</b> wooden coasters, personalized coasters, custom wood coasters
+          </div>
+        </div>
+        <div>
+          <div class="metric-box">
+            <div class="metric-value">$15-$35</div>
+            <div class="metric-label">Optimal Price Range</div>
+          </div>
+          <div class="metric-box" style="margin-top: 10px;">
+            <div class="metric-value score-medium">65%</div>
+            <div class="metric-label">Saturation Level</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Store Builder Tab (Hidden by default in real app) -->
+      <h2 style="margin-top: 50px; margin-bottom: 20px;">Store Builder</h2>
+      <p>Create and optimize your Etsy store based on proven layout patterns from successful sellers</p>
+      
+      <div class="store-builder">
+        <div class="control-panel">
+          <h3>Store Components</h3>
+          <p>Drag and drop elements to customize your store</p>
+          
+          <div class="store-section-editor">
+            <div class="store-section-title">
+              <span>Banner & Shop Icon</span>
+              <span class="ai-badge">AI Optimized</span>
+            </div>
+            <div class="form-group">
+              <label>Banner Image</label>
+              <input type="file">
+            </div>
+            <div class="suggestion-item ai-suggestion">
+              <strong>AI Suggestion:</strong> Use warm earth tones in your banner to match top-performing shops in your niche. Include your product visibly in the banner.
+            </div>
+          </div>
+          
+          <div class="store-section-editor">
+            <div class="store-section-title">
+              <span>Shop Sections</span>
+            </div>
+            <div class="form-group">
+              <label>Section Title</label>
+              <input type="text" placeholder="e.g., Bestsellers">
+            </div>
+            <div class="suggestion-item">
+              <strong>Recommended Structure:</strong> Start with Bestsellers, followed by New Arrivals, then organize by product type or theme.
+            </div>
+          </div>
+          
+          <div class="store-section-editor">
+            <div class="store-section-title">
+              <span>About Section</span>
+              <span class="ai-badge">AI Optimized</span>
+            </div>
+            <div class="form-group">
+              <label>Shop Story</label>
+              <textarea rows="4" placeholder="Tell your shop's story..."></textarea>
+            </div>
+            <div class="suggestion-item ai-suggestion">
+              <strong>AI Suggestion:</strong> Based on successful shops in your niche, emphasize handmade quality and sustainability. Include a personal connection to your craft.
+            </div>
+          </div>
+          
+          <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">Save & Preview</button>
+          <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;">Export to Etsy</button>
+        </div>
+        
+        <div class="preview-panel">
+          <h3>Store Preview</h3>
+          <p>See how your store will look to customers</p>
+          <div style="margin-top: 20px; text-align: center;">
+            <img src="/api/placeholder/600/500" alt="Store Preview">
+          </div>
+        </div>
+      </div>
+      
+      <!-- AI Competitor Analysis Tab (Hidden by default in real app) -->
+      <h2 style="margin-top: 50px; margin-bottom: 20px;">AI Competitor Analysis</h2>
+      <p>Our AI has identified these top-performing stores in your niche. Click to analyze their strategies.</p>
+      
+      <div class="competitor-analysis">
+        <div class="competitor-card">
+          <div class="competitor-avatar">
+            <img src="/api/placeholder/60/60" alt="Competitor Store">
+          </div>
+          <div class="competitor-details">
+            <h3>WoodcraftersDeluxe</h3>
+            <div class="competitor-metrics">
+              <div class="competitor-metric"><strong>2,500+</strong> sales</div>
+              <div class="competitor-metric strong-metric"><strong>4.9★</strong> rating</div>
+              <div class="competitor-metric"><strong>$28.50</strong> avg price</div>
+              <div class="competitor-metric strong-metric"><strong>Top 5%</strong> in category</div>
+            </div>
+          </div>
+          <div style="margin-left: 15px;">
+            <button class="btn btn-ai" style="padding: 8px 12px; font-size: 14px;">Analyze</button>
+          </div>
+        </div>
+        
+        <div class="competitor-card">
+          <div class="competitor-avatar">
+            <img src="/api/placeholder/60/60" alt="Competitor Store">
+          </div>
+          <div class="competitor-details">
+            <h3>CustomCoasterCo</h3>
+            <div class="competitor-metrics">
+              <div class="competitor-metric"><strong>1,800+</strong> sales</div>
+              <div class="competitor-metric"><strong>4.8★</strong> rating</div>
+              <div class="competitor-metric strong-metric"><strong>$32.00</strong> avg price</div>
+              <div class="competitor-metric"><strong>Top 12%</strong> in category</div>
+            </div>
+          </div>
+          <div style="margin-left: 15px;">
+            <button class="btn btn-ai" style="padding: 8px 12px; font-size: 14px;">Analyze</button>
+          </div>
+        </div>
+        
+        <div class="card" style="margin-top: 30px;">
+          <div class="card-header">
+            <div class="card-title">Success Patterns in Your Niche</div>
+            <span class="ai-badge">AI Insights</span>
+          </div>
+          <div style="margin-top: 20px;">
+            <div class="suggestion-item ai-suggestion">
+              <strong>Store Layout:</strong> Top performers arrange products in 3-4 main sections with clear categorization by usage (e.g., "Gifts for Him," "Wedding Gifts").
+            </div>
+            <div class="suggestion-item ai-suggestion">
+              <strong>Visual Strategy:</strong> Natural light photography with minimalist styling performs 38% better than busy backgrounds. Wood grain visibility is emphasized.
+            </div>
+            <div class="suggestion-item ai-suggestion">
+              <strong>Pricing Strategy:</strong> Most successful stores offer a base model at $22-26 with premium customization options that increase average order value by 40%.
+            </div>
+            <div class="suggestion-item ai-suggestion">
+              <strong>Unique Opportunity:</strong> Only 8% of competitors offer bundle deals with matching items. This represents a market gap you could fill.
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Listing Optimizer Tab (Hidden by default in real app) -->
+      <h2 style="margin-top: 50px; margin-bottom: 20px;">Listing Optimizer</h2>
+      <p>Create high-converting product listings based on Etsy's algorithm and customer behavior</p>
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Create New Listing: Wooden Coasters</div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+          <div class="form-group">
+            <label>Listing Title</label>
+            <input type="text" value="Set of 4 Personalized Wooden Coasters | Custom Engraved Coasters | Wedding Gift | Housewarming Present">
+            <div class="suggestion-item ai-suggestion">
+              <strong>AI Title Optimization:</strong> Your title includes 9/10 top-performing keywords for this product category
+            </div>
+          </div>
+          
+          <div class="form-group" style="margin-top: 15px;">
+            <label>Product Description</label>
+            <textarea rows="6">Handcrafted wooden coasters made from sustainable oak. Each coaster can be personalized with names, dates, or custom designs. Perfect as a thoughtful gift for weddings, anniversaries, or housewarmings.</textarea>
+            <div class="suggestion-item ai-suggestion">
+              <strong>AI Description Enhancement:</strong> Add specific dimensions and care instructions to reduce customer questions. Consider mentioning "water-resistant finish" based on common customer searches.
+            </div>
+          </div>
+          
+          <div class="form-group" style="margin-top: 15px;">
+            <label>Tags</label>
+            <input type="text" value="wooden coasters, personalized coasters, custom coasters, wedding gift, housewarming gift, engraved wood, eco friendly">
+            <div class="suggestion-item ai-suggestion">
+              <strong>AI Tag Optimization:</strong> Add "anniversary gift" and "rustic home decor" tags to capture additional high-volume searches.
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="btn btn-primary">Save Listing</button>
+            <button class="btn btn-ai">AI Optimize All Fields</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <footer>
+      <p>© 2025 Etsy Success Suite | Built on Replit | Data refreshed daily</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
