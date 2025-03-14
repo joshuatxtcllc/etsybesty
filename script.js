@@ -3,6 +3,24 @@
 document.addEventListener('DOMContentLoaded', async function() {
   const api = window.api;
 
+  // Loading state handler
+  function setLoading(element, isLoading) {
+    element.classList.toggle('loading', isLoading);
+    element.disabled = isLoading;
+    element.dataset.originalText = element.dataset.originalText || element.textContent;
+    element.textContent = isLoading ? 'Loading...' : element.dataset.originalText;
+  }
+
+  // Error handler
+  function handleError(error, message = 'Operation failed') {
+    console.error(error);
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    document.querySelector('.container').insertAdjacentElement('afterbegin', errorDiv);
+    setTimeout(() => errorDiv.remove(), 5000);
+  }
+
   // Tab switching functionality
   const tabs = document.querySelectorAll('.main-tabs .tab');
   const sections = [
@@ -70,6 +88,46 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.querySelector('.metric-value:not(.score-high)').textContent = 
         `$${result.pricing.optimal.min}-$${result.pricing.optimal.max}`;
       document.querySelector('.score-medium').textContent = `${result.competition.saturationLevel}%`;
+
+      // Create charts
+      const searchCtx = document.querySelector('.chart-placeholder').getContext('2d');
+      new Chart(searchCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+          datasets: [{
+            label: 'Search Volume',
+            data: result.searchVolume.trend,
+            borderColor: '#FF5722',
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: { display: true, text: 'Search Volume Trend' }
+          }
+        }
+      });
+
+      const seasonalCtx = document.querySelectorAll('.chart-placeholder')[2].getContext('2d');
+      new Chart(seasonalCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [{
+            label: 'Seasonal Demand',
+            data: result.seasonal.data,
+            backgroundColor: '#2E7D32'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: { display: true, text: 'Seasonal Demand' }
+          }
+        }
+      });
 
       // Show results
       document.querySelector('.results-section').scrollIntoView({ behavior: 'smooth' });
