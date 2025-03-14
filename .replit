@@ -5,7 +5,7 @@ run = "npm run dev"
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "npm run dev"]
+run = ["sh", "-c", "node server.js"]
 
 [[ports]]
 localPort = 8080
@@ -14,3 +14,15 @@ externalPort = 80
 [[ports]]
 localPort = 37407
 externalPort = 3000
+
+[workflows]
+runButton = "Run"
+
+[[workflows.workflow]]
+name = "Run"
+author = 27546771
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node server.js"
