@@ -17,7 +17,40 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname, '.')));
+app.use(express.json());
 
+// API endpoints
+app.get('/api/etsy/analyze', async (req, res) => {
+  try {
+    const { keyword, category, priceRange } = req.query;
+    const apiResponse = await fetch(`https://openapi.etsy.com/v3/application/listings/active?keywords=${keyword}&category=${category}`, {
+      headers: {
+        'x-api-key': etsyConfig.apiKey
+      }
+    });
+    const data = await apiResponse.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/etsy/competitors', async (req, res) => {
+  try {
+    const { keyword } = req.query;
+    const apiResponse = await fetch(`https://openapi.etsy.com/v3/application/shops?keywords=${keyword}`, {
+      headers: {
+        'x-api-key': etsyConfig.apiKey
+      }
+    });
+    const data = await apiResponse.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Serve index.html for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
