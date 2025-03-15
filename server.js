@@ -1,6 +1,6 @@
-
 const express = require('express');
 const path = require('path');
+const fetch = require('node-fetch'); // Import node-fetch
 const app = express();
 
 // Etsy API configuration
@@ -28,10 +28,17 @@ app.get('/api/etsy/analyze', async (req, res) => {
         'x-api-key': etsyConfig.apiKey
       }
     });
+    if (!apiResponse.ok) {
+      throw new Error(`Etsy API responded with status: ${apiResponse.status}`);
+    }
     const data = await apiResponse.json();
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('API Error:', error);
+    res.status(500).json({ 
+      error: error.message,
+      details: 'Failed to fetch data from Etsy API'
+    });
   }
 });
 
@@ -43,10 +50,17 @@ app.get('/api/etsy/competitors', async (req, res) => {
         'x-api-key': etsyConfig.apiKey
       }
     });
+    if (!apiResponse.ok) {
+      throw new Error(`Etsy API responded with status: ${apiResponse.status}`);
+    }
     const data = await apiResponse.json();
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('API Error:', error);
+    res.status(500).json({ 
+      error: error.message,
+      details: 'Failed to fetch data from Etsy API'
+    });
   }
 });
 
