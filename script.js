@@ -171,16 +171,29 @@ document.addEventListener('DOMContentLoaded', async function() {
   });
 
   // Store Builder functionality
-  const draggableItems = document.querySelectorAll('.component-item');
-  const previewPanel = document.querySelector('.preview-panel');
-  
-  draggableItems.forEach(item => {
-    item.addEventListener('dragstart', handleDragStart);
-    item.addEventListener('dragend', handleDragEnd);
-  });
+  function initializeStoreBuilder() {
+    const draggableItems = document.querySelectorAll('.component-item');
+    const previewPanel = document.querySelector('.preview-panel');
+    
+    if (!draggableItems.length || !previewPanel) return;
 
-  previewPanel.addEventListener('dragover', handleDragOver);
-  previewPanel.addEventListener('drop', handleDrop);
+    draggableItems.forEach(item => {
+      item.addEventListener('dragstart', handleDragStart);
+      item.addEventListener('dragend', handleDragEnd);
+    });
+
+    previewPanel.addEventListener('dragover', handleDragOver);
+    previewPanel.addEventListener('drop', handleDrop);
+    
+    // Make preview panel visible
+    previewPanel.style.minHeight = '500px';
+    previewPanel.style.border = '2px dashed #ccc';
+    previewPanel.style.position = 'relative';
+  }
+
+  // Initialize store builder when tab is clicked
+  const storeBuilderTab = document.querySelectorAll('.tab')[1];
+  storeBuilderTab.addEventListener('click', initializeStoreBuilder);
 
   function handleDragStart(e) {
     e.target.classList.add('dragging');
