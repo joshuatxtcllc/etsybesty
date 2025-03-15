@@ -21,6 +21,25 @@ document.addEventListener('DOMContentLoaded', async function() {
     setTimeout(() => errorDiv.remove(), 5000);
   }
 
+  // Navigation functionality
+  const navLinks = document.querySelectorAll('nav a');
+  navLinks.forEach((link, index) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Map nav links to corresponding tabs
+      const tabMap = {
+        'Dashboard': 0,
+        'My Products': 0,
+        'Store Builder': 1,
+        'Account': 3
+      };
+      const tabIndex = tabMap[link.textContent];
+      if (typeof tabIndex !== 'undefined') {
+        tabs[tabIndex].click();
+      }
+    });
+  });
+
   // Tab switching functionality
   const tabs = document.querySelectorAll('.main-tabs .tab');
   const sections = [
