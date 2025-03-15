@@ -171,21 +171,91 @@ document.addEventListener('DOMContentLoaded', async function() {
   });
 
   // Store Builder functionality
-  const bannerInput = document.querySelector('input[type="file"]');
-  if (bannerInput) {
-    bannerInput.addEventListener('change', function() {
+  const draggableItems = document.querySelectorAll('.component-item');
+  const previewPanel = document.querySelector('.preview-panel');
+  
+  draggableItems.forEach(item => {
+    item.addEventListener('dragstart', handleDragStart);
+    item.addEventListener('dragend', handleDragEnd);
+  });
+
+  previewPanel.addEventListener('dragover', handleDragOver);
+  previewPanel.addEventListener('drop', handleDrop);
+
+  function handleDragStart(e) {
+    e.target.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', e.target.dataset.type);
+  }
+
+  function handleDragEnd(e) {
+    e.target.classList.remove('dragging');
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    const componentType = e.dataTransfer.getData('text/plain');
+    const component = createStoreComponent(componentType);
+    if (component) {
+      const dropPosition = {
+        x: e.clientX - previewPanel.getBoundingClientRect().left,
+        y: e.clientY - previewPanel.getBoundingClientRect().top
+      };
+      component.style.position = 'absolute';
+      component.style.left = dropPosition.x + 'px';
+      component.style.top = dropPosition.y + 'px';
+      previewPanel.appendChild(component);
+    }
+  }
+
+  function createStoreComponent(type) {
+    const component = document.createElement('div');
+    component.className = 'store-component ' + type;
+    switch(type) {
+      case 'banner':
+        component.innerHTML = `<div class="banner-placeholder">Shop Banner Area</div>`;
+        break;
+      case 'featured':
+        component.innerHTML = `<div class="featured-placeholder">Featured Products Section</div>`;
+        break;
+      case 'section':
+        component.innerHTML = `<div class="section-placeholder">Product Collection</div>`;
+        break;
+      case 'about':
+        component.innerHTML = `<div class="about-placeholder">About Your Shop</div>`;
+        break;
+      case 'policies':
+        component.innerHTML = `<div class="policies-placeholder">Shop Policies</div>`;
+        break;
+      default:
+        return null;
+    }
+    return component;
+  }
+
+  // Image preview functionality
+  const imageInputs = document.querySelectorAll('input[type="file"]');
+  imageInputs.forEach(input => {
+    input.addEventListener('change', function() {
       if (this.files && this.files[0]) {
         const reader = new FileReader();
+        const preview = this.nextElementSibling;
+        
         reader.onload = function(e) {
-          // Update preview
-          const preview = document.querySelector('.preview-panel img');
-          preview.src = e.target.result;
-          preview.alt = 'Store Preview';
+          preview.style.backgroundImage = `url(${e.target.result})`;
+          preview.style.backgroundSize = 'cover';
+          preview.style.backgroundPosition = 'center';
+          preview.innerHTML = '';
         };
+        
         reader.readAsDataURL(this.files[0]);
       }
     });
-  }
+  });
 
   // Competitor analysis buttons
   const analyzeButtons = document.querySelectorAll('.competitor-card .btn-ai');

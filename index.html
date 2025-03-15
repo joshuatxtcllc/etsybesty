@@ -128,28 +128,57 @@
         </div>
       </div>
       
-      <!-- Store Builder Tab (Hidden by default in real app) -->
+      <!-- Store Builder Tab -->
       <h2 style="margin-top: 50px; margin-bottom: 20px;">Store Builder</h2>
-      <p>Create and optimize your Etsy store based on proven layout patterns from successful sellers</p>
+      <p>Create and optimize your Etsy store with our easy drag-and-drop builder</p>
       
       <div class="store-builder">
         <div class="control-panel">
-          <h3>Store Components</h3>
-          <p>Drag and drop elements to customize your store</p>
-          
-          <div class="store-section-editor">
-            <div class="store-section-title">
-              <span>Banner & Shop Icon</span>
-              <span class="ai-badge">AI Optimized</span>
-            </div>
-            <div class="form-group">
-              <label>Banner Image</label>
-              <input type="file">
-            </div>
-            <div class="suggestion-item ai-suggestion">
-              <strong>AI Suggestion:</strong> Use warm earth tones in your banner to match top-performing shops in your niche. Include your product visibly in the banner.
+          <div class="store-components">
+            <h3>Store Components</h3>
+            <div class="component-list">
+              <div class="component-item" draggable="true" data-type="banner">
+                <i class="fas fa-image"></i>
+                Banner
+              </div>
+              <div class="component-item" draggable="true" data-type="featured">
+                <i class="fas fa-star"></i>
+                Featured Items
+              </div>
+              <div class="component-item" draggable="true" data-type="section">
+                <i class="fas fa-th"></i>
+                Product Section
+              </div>
+              <div class="component-item" draggable="true" data-type="about">
+                <i class="fas fa-info-circle"></i>
+                About Section
+              </div>
+              <div class="component-item" draggable="true" data-type="policies">
+                <i class="fas fa-shield-alt"></i>
+                Shop Policies
+              </div>
             </div>
           </div>
+          
+          <div class="component-editor">
+            <h3>Edit Component</h3>
+            <div class="editor-content">
+              <!-- Banner Editor -->
+              <div class="editor-section" id="banner-editor">
+                <div class="form-group">
+                  <label>Banner Image</label>
+                  <input type="file" accept="image/*">
+                  <div class="image-preview"></div>
+                </div>
+                <div class="form-group">
+                  <label>Shop Icon</label>
+                  <input type="file" accept="image/*">
+                  <div class="image-preview circle"></div>
+                </div>
+                <div class="suggestion-item ai-suggestion">
+                  <strong>AI Suggestion:</strong> Use warm earth tones in your banner to match top-performing shops in your niche.
+                </div>
+              </div>
           
           <div class="store-section-editor">
             <div class="store-section-title">
