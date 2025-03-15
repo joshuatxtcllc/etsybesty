@@ -16,10 +16,11 @@ const etsyConfig = {
   sharedSecret: process.env.ETSY_SHARED_SECRET
 };
 
-// Middleware to make Etsy config available to client
-app.use((req, res, next) => {
-  res.locals.etsyApiKey = etsyConfig.apiKey;
-  next();
+// API endpoint for Etsy config
+app.get('/api/config', (req, res) => {
+  res.json({
+    apiKey: etsyConfig.apiKey
+  });
 });
 
 app.use(express.static(path.join(__dirname, '.')));

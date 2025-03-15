@@ -96,7 +96,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     submitBtn.disabled = true;
 
     try {
-      const result = await api.analyzeProduct(keyword, category, priceRange);
+      const configResponse = await fetch('/api/config');
+      const config = await configResponse.json();
+      const result = await api.analyzeProduct(keyword, category, priceRange, config.apiKey);
       
       // Update results section
       document.querySelector('.results-section > p').textContent = 
@@ -172,7 +174,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     aiAnalysisBtn.disabled = true;
 
     try {
-      const competitors = await api.getCompetitors(keyword);
+      const configResponse = await fetch('/api/config');
+      const config = await configResponse.json();
+      const competitors = await api.getCompetitors(keyword, config.apiKey);
       
       // Switch to AI Competitor Analysis tab
       tabs[2].click();
