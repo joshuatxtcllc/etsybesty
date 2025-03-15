@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "AI-powered tool for Etsy sellers to research trends and optimize their stores",
   "main": "index.html",
+  "type": "module",
   "scripts": {
     "start": "serve .",
     "dev": "live-server"
