@@ -1,5 +1,8 @@
 
 // Main JavaScript for Etsy Success Suite
+// Import Chart.js from CDN
+import 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';
+
 document.addEventListener('DOMContentLoaded', async function() {
   const api = window.api;
 
