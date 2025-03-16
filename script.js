@@ -96,9 +96,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     submitBtn.disabled = true;
 
     try {
-      const configResponse = await fetch('/api/config');
-      const config = await configResponse.json();
-      const result = await api.analyzeProduct(keyword, category, priceRange, config.apiKey);
+      const result = await api.analyzeProduct(keyword, category, priceRange);
+      if (!result) throw new Error('No analysis results received');
       
       // Update results section
       document.querySelector('.results-section > p').textContent = 

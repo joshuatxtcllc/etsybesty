@@ -1,17 +1,25 @@
-// Real Etsy API integration
+// Mock Etsy API integration
 class EtsyApi {
   constructor() {
     this.baseUrl = 'https://openapi.etsy.com/v3';
-    this.apiKey = process.env.ETSY_API_KEY;
+    this.apiKey = null;
+  }
+
+  async init() {
+    try {
+      const response = await fetch('/api/config');
+      const config = await response.json();
+      this.apiKey = config.apiKey;
+    } catch (error) {
+      console.error('Failed to initialize API:', error);
+      throw error;
+    }
   }
 
   async analyzeProduct(keyword, category, priceRange) {
     try {
-      const response = await fetch(`${this.baseUrl}/application/listings/active?keywords=${keyword}&category=${category}`, {
-        headers: {
-          'x-api-key': this.apiKey
-        }
-      });
+      const response = await fetch(`/api/etsy/analyze?keyword=${encodeURIComponent(keyword)}&category=${encodeURIComponent(category)}&priceRange=${encodeURIComponent(priceRange)}`);
+      if (!response.ok) throw new Error('API request failed');
       const data = await response.json();
       return this.processListingsData(data);
     } catch (error) {
@@ -22,22 +30,13 @@ class EtsyApi {
 
   async getCompetitors(keyword) {
     try {
-      const response = await fetch(`${this.baseUrl}/application/shops?keywords=${keyword}`, {
-        headers: {
-          'x-api-key': this.apiKey
-        }
-      });
+      const response = await fetch(`/api/etsy/competitors?keyword=${encodeURIComponent(keyword)}`);
+      if (!response.ok) throw new Error('API request failed');
       return await response.json();
     } catch (error) {
       console.error('Etsy API error:', error);
       throw error;
     }
-  }
-
-  async optimizeListing(title, description, tags) {
-    // Implement real SEO analysis using Etsy's guidelines
-    const response = await this.analyzeProduct(title, '', '');
-    return this.processOptimizationData(response);
   }
 
   processListingsData(data) {
@@ -123,4 +122,7 @@ class EtsyApi {
   }
 }
 
-window.api = new EtsyApi();
+// Initialize API
+const api = new EtsyApi();
+api.init().catch(console.error);
+window.api = api;
