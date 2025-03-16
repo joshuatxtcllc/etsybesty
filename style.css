@@ -1,16 +1,17 @@
+
 /* Main styles for Etsy Success Suite */
 :root {
-  --primary: #FF5722;
-  --secondary: #2E7D32;
-  --light: #FAFAFA;
-  --dark: #212121;
-  --gray: #E0E0E0;
-  --success: #43A047;
-  --warning: #FFA000;
-  --danger: #D32F2F;
-  --accent: #3F51B5;
-  --ai-highlight: #6A1B9A;
-  --shadow: rgba(0, 0, 0, 0.08);
+  --primary: #2563eb;
+  --secondary: #0ea5e9;
+  --light: #f8fafc;
+  --dark: #0f172a;
+  --gray: #e2e8f0;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --accent: #8b5cf6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 * {
@@ -34,11 +35,13 @@ body {
 
 header {
   background: white;
-  box-shadow: 0 2px 12px var(--shadow);
+  box-shadow: var(--card-shadow);
   padding: 16px 0;
   position: sticky;
   top: 0;
   z-index: 100;
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .logo {
@@ -46,6 +49,9 @@ header {
   font-weight: 800;
   color: var(--primary);
   letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 nav ul {
@@ -60,7 +66,7 @@ nav a {
   font-weight: 600;
   position: relative;
   padding: 4px 0;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
 }
 
 nav a:hover {
@@ -74,7 +80,7 @@ nav a::after {
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: var(--primary);
+  background: linear-gradient(90deg, var(--primary), var(--accent));
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
@@ -86,36 +92,45 @@ nav a:hover::after {
 .main-tabs {
   display: flex;
   gap: 8px;
-  padding: 8px;
+  padding: 12px;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px var(--shadow);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
   margin-bottom: 32px;
+  overflow-x: auto;
 }
 
 .tab {
   padding: 12px 24px;
   cursor: pointer;
   font-weight: 600;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .tab:hover {
-  background: var(--light);
+  background: var(--gray);
+  transform: translateY(-1px);
 }
 
 .tab.active {
   background: var(--primary);
   color: white;
+  transform: translateY(-1px);
 }
 
 .search-section {
   background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 4px 20px var(--shadow);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: var(--card-shadow);
   margin-bottom: 40px;
+  transition: transform 0.3s ease;
+}
+
+.search-section:hover {
+  transform: translateY(-2px);
 }
 
 .search-form {
@@ -137,46 +152,48 @@ label {
 }
 
 input, select, textarea {
-  padding: 12px;
+  padding: 14px;
   border: 2px solid var(--gray);
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 16px;
-  transition: border-color 0.2s;
+  transition: all 0.2s ease;
+  background: var(--light);
 }
 
 input:focus, select:focus, textarea:focus {
   border-color: var(--primary);
   outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .btn {
   padding: 14px 28px;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
 }
 
 .btn-primary:hover {
-  background: #F4511E;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .btn-ai {
-  background: var(--ai-highlight);
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
   color: white;
 }
 
 .btn-ai:hover {
-  background: #5E35B1;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
 }
 
 .dashboard {
@@ -188,77 +205,128 @@ input:focus, select:focus, textarea:focus {
 
 .card {
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px var(--shadow);
-  padding: 24px;
-  transition: transform 0.2s;
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+  padding: 32px;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .card-title {
   font-size: 20px;
   font-weight: 700;
   color: var(--dark);
+  background: linear-gradient(135deg, var(--dark), var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .chart-container {
   height: 240px;
   background: var(--light);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.chart-container:hover {
+  transform: scale(1.02);
 }
 
 .results-section {
-  margin-top: 40px;
+  margin-top: 48px;
 }
 
 .result-card {
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px var(--shadow);
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
   padding: 32px;
   margin-bottom: 24px;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   gap: 32px;
+  transition: all 0.3s ease;
+}
+
+.result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .metric-box {
   background: var(--light);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 24px;
   text-align: center;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
 }
 
 .metric-box:hover {
   transform: translateY(-4px);
+  background: linear-gradient(135deg, white, var(--light));
 }
 
 .metric-value {
   font-size: 32px;
   font-weight: 800;
   margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .metric-label {
-  color: #666;
+  color: #64748b;
   font-weight: 500;
 }
 
 .score-high { color: var(--success); }
 .score-medium { color: var(--warning); }
 .score-low { color: var(--danger); }
+
+.competitor-card {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.competitor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow);
+}
+
+.suggestion-item {
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  background: var(--light);
+  transition: all 0.3s ease;
+}
+
+.suggestion-item:hover {
+  transform: translateY(-2px);
+}
+
+.ai-suggestion {
+  border-left: 4px solid var(--accent);
+  background: linear-gradient(to right, var(--light), white);
+}
 
 @media (max-width: 768px) {
   .search-form {
@@ -272,5 +340,14 @@ input:focus, select:focus, textarea:focus {
 
   .dashboard {
     grid-template-columns: 1fr;
+  }
+  
+  .main-tabs {
+    padding: 8px;
+  }
+  
+  .tab {
+    padding: 10px 16px;
+    font-size: 14px;
   }
 }
