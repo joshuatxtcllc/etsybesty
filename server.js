@@ -16,6 +16,10 @@ const etsyConfig = {
   sharedSecret: process.env.ETSY_SHARED_SECRET
 };
 
+if (!etsyConfig.apiKey) {
+  console.error('Missing Etsy API credentials. Please set up environment variables.');
+}
+
 // API endpoint for Etsy config
 app.get('/api/config', (req, res) => {
   res.json({
