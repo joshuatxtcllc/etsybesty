@@ -1,9 +1,8 @@
 
 // Main JavaScript for Etsy Success Suite
-// Import Chart.js from CDN
-import 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';
-
 document.addEventListener('DOMContentLoaded', async function() {
+  // Load Chart.js
+  await loadChartJS();
   const api = window.api;
 
   // Loading state handler
@@ -113,7 +112,12 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.querySelector('.score-medium').textContent = `${result.competition.saturationLevel}%`;
 
       // Create charts
-      const searchCtx = document.querySelector('.chart-placeholder').getContext('2d');
+      // Clear existing content
+      document.querySelectorAll('.chart-placeholder').forEach(placeholder => {
+        placeholder.innerHTML = '<canvas></canvas>';
+      });
+      
+      const searchCtx = document.querySelector('.chart-placeholder canvas').getContext('2d');
       new Chart(searchCtx, {
         type: 'line',
         data: {
@@ -133,7 +137,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
       });
 
-      const seasonalCtx = document.querySelectorAll('.chart-placeholder')[2].getContext('2d');
+      const seasonalCtx = document.querySelectorAll('.chart-placeholder canvas')[2].getContext('2d');
       new Chart(seasonalCtx, {
         type: 'bar',
         data: {
@@ -293,7 +297,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
   }
 
-  function createStoreComponent(type) {
+  async function loadChartJS() {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+function createStoreComponent(type) {
     const component = document.createElement('div');
     component.className = 'store-component ' + type;
     switch(type) {
