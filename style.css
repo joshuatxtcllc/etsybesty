@@ -381,7 +381,35 @@ input, select, textarea {
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   padding: 20px;
   min-height: 600px;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dropped-component {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropped-component:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.dropped-component h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.dropped-component p {
+  margin: 0;
+  color: #666;
 }
 
 .preview-panel.drag-over {

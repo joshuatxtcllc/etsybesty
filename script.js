@@ -237,15 +237,58 @@ document.addEventListener('DOMContentLoaded', async function() {
     const componentType = e.dataTransfer.getData('text/plain');
     const component = createStoreComponent(componentType);
     if (component) {
-      const dropPosition = {
-        x: e.clientX - previewPanel.getBoundingClientRect().left,
-        y: e.clientY - previewPanel.getBoundingClientRect().top
-      };
-      component.style.position = 'absolute';
-      component.style.left = dropPosition.x + 'px';
-      component.style.top = dropPosition.y + 'px';
+      component.classList.add('dropped-component');
       previewPanel.appendChild(component);
+      makeComponentEditable(component);
     }
+    previewPanel.classList.remove('drag-over');
+  }
+
+  function makeComponentEditable(component) {
+    component.addEventListener('click', () => {
+      const editor = document.querySelector('.component-editor');
+      editor.innerHTML = createEditorHTML(component);
+      setupEditorListeners(component);
+    });
+  }
+
+  function createEditorHTML(component) {
+    return `
+      <h3>Edit ${component.className.split(' ')[1]}</h3>
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" class="component-title" value="${component.querySelector('h3')?.textContent || ''}">
+      </div>
+      <div class="form-group">
+        <label>Content</label>
+        <textarea class="component-content" rows="4">${component.querySelector('p')?.textContent || ''}</textarea>
+      </div>
+      <button class="btn btn-primary save-component">Save Changes</button>
+      <button class="btn btn-danger delete-component">Delete Component</button>
+    `;
+  }
+
+  function setupEditorListeners(component) {
+    const editor = document.querySelector('.component-editor');
+    
+    editor.querySelector('.save-component').addEventListener('click', () => {
+      const title = editor.querySelector('.component-title').value;
+      const content = editor.querySelector('.component-content').value;
+      
+      const titleEl = component.querySelector('h3') || document.createElement('h3');
+      const contentEl = component.querySelector('p') || document.createElement('p');
+      
+      titleEl.textContent = title;
+      contentEl.textContent = content;
+      
+      if (!component.contains(titleEl)) component.appendChild(titleEl);
+      if (!component.contains(contentEl)) component.appendChild(contentEl);
+    });
+
+    editor.querySelector('.delete-component').addEventListener('click', () => {
+      component.remove();
+      editor.innerHTML = '<h3>Select a component to edit</h3>';
+    });
   }
 
   function createStoreComponent(type) {
