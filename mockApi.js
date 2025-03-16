@@ -23,6 +23,7 @@ class EtsyApi {
       const data = await response.json();
       return this.processListingsData(data);
     } catch (error) {
+      console.log('Using mock data due to API error:', error);
       console.error('Using mock data due to API error:', error);
       // Return mock data for testing
       return {
