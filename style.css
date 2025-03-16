@@ -1,17 +1,18 @@
 
 /* Main styles for Etsy Success Suite */
 :root {
-  --primary: #2563eb;
-  --secondary: #0ea5e9;
-  --light: #f8fafc;
-  --dark: #0f172a;
-  --gray: #e2e8f0;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --accent: #8b5cf6;
-  --shadow: rgba(0, 0, 0, 0.1);
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --primary: #4f46e5;
+  --secondary: #3b82f6;
+  --light: #fafafa;
+  --dark: #1e1b4b;
+  --gray: #e5e7eb;
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --accent: #7c3aed;
+  --shadow: rgba(0, 0, 0, 0.08);
+  --card-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.1), 0 4px 8px -2px rgba(0, 0, 0, 0.06);
+  --gradient: linear-gradient(135deg, var(--primary), var(--accent));
 }
 
 * {
@@ -29,11 +30,12 @@ body {
 
 .container {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 16px;
+  margin: 24px auto;
+  padding: 24px;
   background: white;
-  border-radius: 24px;
+  border-radius: 32px;
   box-shadow: var(--card-shadow);
+  overflow: hidden;
 }
 
 header {
@@ -172,11 +174,34 @@ input:focus, select:focus, textarea:focus {
 .btn {
   padding: 14px 28px;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 4px var(--shadow);
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn:hover::after {
+  opacity: 0.1;
+}
+
+.btn:active {
+  transform: translateY(1px);
 }
 
 .btn-primary {
@@ -226,7 +251,36 @@ input:focus, select:focus, textarea:focus {
   border-radius: 24px;
   box-shadow: var(--card-shadow);
   padding: 32px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(8px);
+}
+
+input, select, textarea {
+  padding: 16px;
+  border: 2px solid var(--gray);
+  border-radius: 14px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  background: var(--light);
+  width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 8px;
+  display: block;
 }
 
 .card:hover {
