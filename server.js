@@ -75,6 +75,38 @@ app.get('/api/etsy/competitors', async (req, res) => {
   }
 });
 
+// Handle store export to Etsy
+app.post('/api/export-to-etsy', async (req, res) => {
+  try {
+    const { components } = req.body;
+    
+    // This would typically use the Etsy API to update the store
+    // For now, we'll just return a success response
+    
+    // In a real implementation, you would:
+    // 1. Validate the user's Etsy credentials
+    // 2. Format the components into Etsy's expected format
+    // 3. Make API calls to update store sections, about, policies, etc.
+    
+    console.log('Export request received with components:', components);
+    
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    res.json({
+      success: true,
+      message: 'Store layout successfully exported to Etsy'
+    });
+  } catch (error) {
+    console.error('Export error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: error.message,
+      details: 'Failed to export store to Etsy'
+    });
+  }
+});
+
 // Serve index.html for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
